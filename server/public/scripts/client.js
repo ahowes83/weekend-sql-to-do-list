@@ -5,6 +5,8 @@ function onReady(){
   //funcs to be run on page load
   //logic for buttons
   updateDisplay()
+  $('#tasksOut').click('.deleteTask',deleteTask);
+  $('#tasksOut').click('.markComplete', markComplete);
 }
 
 function addTask(){
@@ -13,6 +15,28 @@ function addTask(){
 
 function updateDisplay(){
   // get current tasks from server
+}
+
+function getTasks(){
+  $.ajax({
+    method: 'GET',
+    url: '/toDoList'
+  }).then(function(response){
+    console.log(response)
+    const el = $('#tasksOut')
+    el.empty();
+    for (let i = 0; i < response.length; i++){
+      el.append(`<tr><td class="task">${response[i].task}</td> <td> <input type="checkbox" class="markComplete" id="box${i}" checked="${response[i].complete}"/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+    }
+  });
+}
+
+function deleteTask(){
+  //implement delete task button
+}
+
+function markComplete(){
+  // implement markComplete button
 }
 
 

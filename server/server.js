@@ -7,7 +7,7 @@ app.use(express.static('server/public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/toDoList', toDoList);
 
-const port = 5001;
+const port = process.env.PORT || 5001;
 
 app.listen(port, ()=>{
   console.log("Surf's up");

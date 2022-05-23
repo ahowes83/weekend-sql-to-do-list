@@ -1,10 +1,10 @@
 console express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
-
+let tasksList = [];
 router.get('/', (req, res)=> {
   let queryString = `SELECT * FROM inventory`;
-  pool.query(queryString).ten((results)=>{
+  pool.query(queryString).then((results)=>{
     res.send(results.rows);
   }).catch((err)=>{
     console.log(err);
@@ -12,7 +12,7 @@ router.get('/', (req, res)=> {
   })
 });
 
-
+module.exports = router;
 // create front end allowing user to make task
 // store task in database
 // refresh when task created show all pending tasks
