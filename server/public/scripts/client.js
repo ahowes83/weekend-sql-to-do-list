@@ -26,7 +26,7 @@ function getTasks(){
     const el = $('#tasksOut')
     el.empty();
     for (let i = 0; i < response.length; i++){
-      el.append(`<tr><td class="task">${response[i].task}</td> <td> <input type="checkbox" class="markComplete" id="box${i}" checked="${response[i].complete}"/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <input type="checkbox" class="markComplete" id="box${i}" checked="${response[i].complete}"/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }

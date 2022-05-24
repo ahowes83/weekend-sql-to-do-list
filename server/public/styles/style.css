@@ -1,0 +1,8 @@
+table, td, th {
+  border: 1px solid;
+  text-align: left;
+}
+
+.taskHead, #taskIn {
+  min-width: 20em;
+}

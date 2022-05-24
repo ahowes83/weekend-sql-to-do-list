@@ -10,7 +10,7 @@ app.use('/toDoList', toDoList);
 const port = process.env.PORT || 5001;
 
 app.listen(port, ()=>{
-  console.log("Surf's up");
+  console.log("Surf's up", PORT);
 })
 
 

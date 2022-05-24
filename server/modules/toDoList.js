@@ -1,9 +1,10 @@
 console express = require('express');
-const router = express.Router();
+const taskRouter = express.Router();
 const pool = require('../modules/pool');
 let tasksList = [];
-router.get('/', (req, res)=> {
-  let queryString = `SELECT * FROM inventory`;
+
+taskRouter.get('/', (req, res)=> {
+  let queryString = `SELECT * FROM weekend-to-do-list ORDER BY id ASC`;
   pool.query(queryString).then((results)=>{
     res.send(results.rows);
   }).catch((err)=>{
@@ -12,6 +13,17 @@ router.get('/', (req, res)=> {
   })
 });
 
+taskRouter.post('/', (req, res)=>{
+  console.log('in /weekend-sql-to-do-list POST:', req.body);
+  const queryString = `INSERT INTO weekend-to-do-list (added, task, complete) VALUES($1, $2, $3)`;
+  const values = [req.body.added, req.body.task, req.body.complete];
+  pool.query(queryString, values).then((result)=>{
+    res.sendStatus(201);
+  }).catch((err)=>{
+    console.log(err);
+    res.sendStatus(500);
+  });
+})
 module.exports = router;
 // create front end allowing user to make task
 // store task in database
