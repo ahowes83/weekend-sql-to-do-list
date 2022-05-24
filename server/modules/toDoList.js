@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 let tasksList = [];
 
 taskRouter.get('/', (req, res)=> {
-  let queryString = `SELECT * FROM weekend-to-do-list ORDER BY id ASC`;
+  let queryString = `SELECT * FROM "weekend-to-do-list" ORDER BY id ASC`;
   pool.query(queryString).then((results)=>{
     res.send(results.rows);
   }).catch((err)=>{
@@ -15,7 +15,7 @@ taskRouter.get('/', (req, res)=> {
 
 taskRouter.post('/', (req, res)=>{
   console.log('in /weekend-sql-to-do-list POST:', req.body);
-  const queryString = `INSERT INTO weekend-to-do-list (added, task, complete) VALUES($1, $2, $3)`;
+  const queryString = `INSERT INTO "weekend-to-do-list" (added, task, complete) VALUES($1, $2, $3)`;
   const values = [req.body.added, req.body.task, req.body.complete];
   pool.query(queryString, values).then((result)=>{
     res.sendStatus(201);
@@ -24,7 +24,33 @@ taskRouter.post('/', (req, res)=>{
     res.sendStatus(500);
   });
 })
+
+taskRouter.put('/', (req, res)=>{
+  console.log('in /weekend-to-do-list:' req.query);
+  let queryString = `UPDATE "weekend-to-do-list" complete=True WHERE id=$1;`;
+  let values = [req.query.id];
+  pool.query(queryString, values).then((results)=>{
+    res.sendStatus(200);
+  }).catch((err)=>{
+    console.log(err);
+    res.sendStatus(500);
+  });
+});
+
+taskRouter.delete('/', (req, res)=>{
+  console.log(`in /weekend-to-do-list:`, req.query);
+  let queryString = `DELETE FROM "weekend-to-do-list" WHERE id=$1;`;
+  let values = [req.query.id];
+  pool.query(queryString, values).then((results)=>{
+    res.sendStatus(200);
+  }).catch((err)=>{
+    console.log(err);
+    res.sendStatus(500);
+  });
+});
+
 module.exports = router;
+
 // create front end allowing user to make task
 // store task in database
 // refresh when task created show all pending tasks

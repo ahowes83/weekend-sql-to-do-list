@@ -5,12 +5,17 @@ function onReady(){
   //funcs to be run on page load
   //logic for buttons
   updateDisplay()
-  $('#tasksOut').click('.deleteTask',deleteTask);
+  $('#tasksOut').click('.deleteTask', deleteTask);
   $('#tasksOut').click('.markComplete', markComplete);
 }
 
+
 function addTask(){
   //add task to server and database
+  $.ajax({
+    method: 'POST',
+    url: '/todolist'
+  })
 }
 
 function updateDisplay(){
@@ -20,13 +25,13 @@ function updateDisplay(){
 function getTasks(){
   $.ajax({
     method: 'GET',
-    url: '/toDoList'
+    url: '/todolist'
   }).then(function(response){
     console.log(response)
     const el = $('#tasksOut')
     el.empty();
     for (let i = 0; i < response.length; i++){
-      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <input type="checkbox" class="markComplete" id="box${i}" checked="${response[i].complete}"/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <button class="markComplete" id="box${i}">Mark Complete<button/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }
@@ -36,6 +41,10 @@ function deleteTask(){
 }
 
 function markComplete(){
+  $.ajax({
+    method: 'PUT',
+    url: '/todolist'
+  })
   // implement markComplete button
 }
 
