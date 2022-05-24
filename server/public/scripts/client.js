@@ -1,10 +1,18 @@
 $(document).ready(onReady);
 
+let dateTime = new Date();
+let date = dateTime.getDate();
+let month = dateTime.getMonth() + 1;
+let year = dateTime.getYear()
+let hour = dateTime.getHours();
+let minute = dateTime.getMinutes();
+let formattedDateTime = date + month + year + hour + ':' + minute;
 // create front end allowing user to make task
 function onReady(){
   //funcs to be run on page load
   //logic for buttons
   updateDisplay()
+  $('#submitButton').click(addTask);
   $('#tasksOut').click('.deleteTask', deleteTask);
   $('#tasksOut').click('.markComplete', markComplete);
 }
@@ -12,9 +20,20 @@ function onReady(){
 
 function addTask(){
   //add task to server and database
+  let newTask = {
+    added: formattedDateTime,
+    task: $('#taskIn').val(),
+    complete: False
+  }
+  console.log('adding', newTask);
   $.ajax({
     method: 'POST',
     url: '/todolist'
+    data: newTask
+  }).then(function(response){
+    console.log('back from To Do List:', response);
+    getTasks();
+    $('#taskIn').val('');
   })
 }
 
