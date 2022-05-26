@@ -1,34 +1,28 @@
 $(document).ready(onReady);
 
 let dateTime = new Date();
-let date = dateTime.getDate();
-let month = dateTime.getMonth() + 1;
-let year = dateTime.getYear()
-let hour = dateTime.getHours();
-let minute = dateTime.getMinutes();
-let formattedDateTime = date + month + year + hour + ':' + minute;
+dateTime = dateTime.toLocaleString();
 // create front end allowing user to make task
 function onReady(){
   //funcs to be run on page load
   //logic for buttons
-  updateDisplay()
+  updateDisplay();
   $('#submitButton').click(addTask);
   $('#tasksOut').click('.deleteTask', deleteTask);
   $('#tasksOut').click('.markComplete', markComplete);
 }
 
-
 function addTask(){
   //add task to server and database
   let newTask = {
-    added: formattedDateTime,
+    added: dateTime,
     task: $('#taskIn').val(),
-    complete: False
+    complete: false
   }
   console.log('adding', newTask);
   $.ajax({
     method: 'POST',
-    url: '/todolist'
+    url: '/toDoList',
     data: newTask
   }).then(function(response){
     console.log('back from To Do List:', response);
@@ -44,13 +38,13 @@ function updateDisplay(){
 function getTasks(){
   $.ajax({
     method: 'GET',
-    url: '/todolist'
+    url: '/toDoList'
   }).then(function(response){
     console.log(response)
     const el = $('#tasksOut')
     el.empty();
     for (let i = 0; i < response.length; i++){
-      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <button class="markComplete" id="box${i}">Mark Complete<button/></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <button class="markComplete" id="box${i}">Mark Complete</button></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }
@@ -62,11 +56,13 @@ function deleteTask(){
 function markComplete(){
   $.ajax({
     method: 'PUT',
-    url: '/todolist'
-  })
+    url: '/toDoList'
+  });
   // implement markComplete button
+  // strike-through on marked complete
+  // perhaps make button toggle
+  // sort completed tasks to bottom or to separate table
 }
-
 
 // store task in database
 // refresh when task created show all pending tasks

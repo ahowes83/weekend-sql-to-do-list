@@ -1,10 +1,10 @@
-console express = require('express');
+const express = require('express');
 const taskRouter = express.Router();
-const pool = require('../modules/pool');
+const pool = require('./pool');
 let tasksList = [];
 
 taskRouter.get('/', (req, res)=> {
-  let queryString = `SELECT * FROM "weekend-to-do-list" ORDER BY id ASC`;
+  let queryString = `SELECT * FROM "weekend-to-do-app" ORDER BY id ASC`;
   pool.query(queryString).then((results)=>{
     res.send(results.rows);
   }).catch((err)=>{
@@ -14,8 +14,8 @@ taskRouter.get('/', (req, res)=> {
 });
 
 taskRouter.post('/', (req, res)=>{
-  console.log('in /weekend-sql-to-do-list POST:', req.body);
-  const queryString = `INSERT INTO "weekend-to-do-list" (added, task, complete) VALUES($1, $2, $3)`;
+  console.log('in /weekend-sql-to-do-app POST:', req.body);
+  const queryString = `INSERT INTO "weekend-to-do-app" (added, task, complete) VALUES($1, $2, $3)`;
   const values = [req.body.added, req.body.task, req.body.complete];
   pool.query(queryString, values).then((result)=>{
     res.sendStatus(201);
@@ -26,8 +26,8 @@ taskRouter.post('/', (req, res)=>{
 })
 
 taskRouter.put('/', (req, res)=>{
-  console.log('in /weekend-to-do-list:' req.query);
-  let queryString = `UPDATE "weekend-to-do-list" complete=True WHERE id=$1;`;
+  console.log('in /"weekend-to-do-app":', req.query);
+  let queryString = `UPDATE "weekend-to-do-app" complete=True WHERE id=$1;`;
   let values = [req.query.id];
   pool.query(queryString, values).then((results)=>{
     res.sendStatus(200);
@@ -38,8 +38,8 @@ taskRouter.put('/', (req, res)=>{
 });
 
 taskRouter.delete('/', (req, res)=>{
-  console.log(`in /weekend-to-do-list:`, req.query);
-  let queryString = `DELETE FROM "weekend-to-do-list" WHERE id=$1;`;
+  console.log(`in /weekend-to-do-app:`, req.query);
+  let queryString = `DELETE FROM "weekend-to-do-app" WHERE id=$1;`;
   let values = [req.query.id];
   pool.query(queryString, values).then((results)=>{
     res.sendStatus(200);
@@ -49,7 +49,7 @@ taskRouter.delete('/', (req, res)=>{
   });
 });
 
-module.exports = router;
+module.exports = taskRouter;
 
 // create front end allowing user to make task
 // store task in database
