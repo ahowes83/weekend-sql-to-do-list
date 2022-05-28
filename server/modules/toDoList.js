@@ -1,7 +1,6 @@
 const express = require('express');
 const taskRouter = express.Router();
 const pool = require('./pool');
-let tasksList = [];
 
 taskRouter.get('/', (req, res)=> {
   let queryString = `SELECT * FROM "weekend-to-do-app" ORDER BY id ASC`;

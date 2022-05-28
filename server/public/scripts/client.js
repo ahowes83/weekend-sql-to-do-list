@@ -2,7 +2,7 @@ $(document).ready(onReady);
 
 let dateTime = new Date();
 dateTime = dateTime.toLocaleString();
-// create front end allowing user to make task
+
 function onReady(){
   //funcs to be run on page load
   //logic for buttons
@@ -44,24 +44,35 @@ function getTasks(){
     const el = $('#tasksOut')
     el.empty();
     for (let i = 0; i < response.length; i++){
-      el.append(`<tr><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td> <button class="markComplete" id="box${i}">Mark Complete</button></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+      el.append(`<tr id="entry"${response[i].id}><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td><button class="markComplete">Mark Complete</button></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }
 
 function deleteTask(){
   //implement delete task button
+  $.ajax({
+    method: 'DELETE',
+    url: '/toDoList'
+  }).then(function(response){
+    getTasks();
+  }).catch(function(err) {
+    console.log(err);
+  })
 }
 
 function markComplete(){
   $.ajax({
     method: 'PUT',
     url: '/toDoList'
+  }).then(function(response){
+
   });
   // implement markComplete button
   // strike-through on marked complete
   // perhaps make button toggle
   // sort completed tasks to bottom or to separate table
+  // if task is complete replace 'mark complete' button with time of completion
 }
 
 // store task in database
