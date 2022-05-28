@@ -43,8 +43,11 @@ function getTasks(){
     console.log(response)
     const el = $('#tasksOut')
     el.empty();
+    const falseAppendable = '<button class="markComplete" value=${response[i].complete}>Mark Complete</button>';
+    const trueAppendable = "X'd at ${response[i].time_completed}";
     for (let i = 0; i < response.length; i++){
-      el.append(`<tr id="entry"${response[i].id}><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td><button class="markComplete">Mark Complete</button></td> <td> <button class="deleteTask">Delete</button> </td> </tr>`)
+      let completeCheck = response => response[i].complete ? falseAppendable : trueAppendable;
+      el.append(`<tr id="entry"${response[i].id}><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td>${completeCheck}</td> <td><button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }
