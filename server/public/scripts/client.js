@@ -43,20 +43,26 @@ function getTasks(){
     console.log(response)
     const el = $('#tasksOut')
     el.empty();
-    const falseAppendable = '<button class="markComplete" value=${response[i].complete}>Mark Complete</button>';
-    const trueAppendable = "X'd at ${response[i].time_completed}";
+
     for (let i = 0; i < response.length; i++){
-      let completeCheck = response => response[i].complete ? falseAppendable : trueAppendable;
-      el.append(`<tr id="entry"${response[i].id}><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td>${completeCheck}</td> <td><button class="deleteTask">Delete</button> </td> </tr>`)
+      const falseAppendable = `<button class="markComplete" value=${response[i].complete}>Mark Complete</button>`;
+      const trueAppendable = `X'd at ${response[i].time_completed}`;
+
+      function completeCheck(row) {
+      return row.complete ? trueAppendable : falseAppendable;
+    }
+      el.append(`<tr id="${response[i].id}"><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td>${completeCheck(response[i])}</td> <td><button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }
 
 function deleteTask(){
+  let getId = $(this).attr('id');
   //implement delete task button
   $.ajax({
     method: 'DELETE',
-    url: '/toDoList'
+    url: '/toDoList',
+    data: {id: getId}
   }).then(function(response){
     getTasks();
   }).catch(function(err) {
