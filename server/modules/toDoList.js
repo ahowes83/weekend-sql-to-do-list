@@ -25,8 +25,8 @@ taskRouter.post('/', (req, res)=>{
 })
 
 taskRouter.put('/', (req, res)=>{
-  console.log('in /"weekend-to-do-app":', req.query);
-  let queryString = `UPDATE "weekend-to-do-app" complete=True WHERE id=$1;`;
+  console.log('in /"weekend-to-do-app":', req.query, req.query.id);
+  let queryString = `UPDATE "weekend-to-do-app" set complete=true WHERE id=$1;`;
   let values = [req.query.id];
   pool.query(queryString, values).then((results)=>{
     res.sendStatus(200);

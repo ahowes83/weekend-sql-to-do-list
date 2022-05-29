@@ -6,10 +6,10 @@ dateTime = dateTime.toLocaleString();
 function onReady(){
   //funcs to be run on page load
   //logic for buttons
-  updateDisplay();
+  getTasks();
   $('#submitButton').click(addTask);
-  $('#tasksOut').click('.deleteTask', deleteTask);
-  $('#tasksOut').click('.markComplete', markComplete);
+  $('#tasksOut').on('click', '.deleteTask', deleteTask);
+  $('#tasksOut').on('click', '.markComplete', markComplete);
 }
 
 function addTask(){
@@ -31,10 +31,6 @@ function addTask(){
   })
 }
 
-function updateDisplay(){
-  // get current tasks from server
-}
-
 function getTasks(){
   $.ajax({
     method: 'GET',
@@ -45,25 +41,29 @@ function getTasks(){
     el.empty();
 
     for (let i = 0; i < response.length; i++){
-      const falseAppendable = `<button class="markComplete" value=${response[i].complete}>Mark Complete</button>`;
-      const trueAppendable = `X'd at ${response[i].time_completed}`;
+      const falseAppendable = `<td class="uncomplete"><button class="markComplete" value=${response[i].complete} data-id="${response[i].id}">Mark Complete</button></td>`;
+      const trueAppendable = `<td class="completed">${response[i].time_completed}</td>`;
 
       function completeCheck(row) {
       return row.complete ? trueAppendable : falseAppendable;
     }
-      el.append(`<tr id="${response[i].id}"><td class="added">${response[i].added}</td> <td class="task">${response[i].task}</td> <td>${completeCheck(response[i])}</td> <td><button class="deleteTask">Delete</button> </td> </tr>`)
+      el.append(`
+      <tr id=${response[i].id}>
+      <td class="added" data-id="${response[i].id}">${response[i].added}</td>
+      <td class="task">${response[i].task}</td>
+      ${completeCheck(response[i])}
+      <td><button class="deleteTask" data-id="${response[i].id}">Delete</button> </td> </tr>`)
     }
   });
 }
 
 function deleteTask(){
-  let getId = $(this).attr('id');
   //implement delete task button
   $.ajax({
     method: 'DELETE',
-    url: '/toDoList',
-    data: {id: getId}
+    url: `/toDoList?id=${$(this).parent().parent().attr('id')}`
   }).then(function(response){
+    console.log(response);
     getTasks();
   }).catch(function(err) {
     console.log(err);
@@ -73,9 +73,12 @@ function deleteTask(){
 function markComplete(){
   $.ajax({
     method: 'PUT',
-    url: '/toDoList'
+    url: `/toDoList?id=${$(this).parent().parent().attr('id')}`
   }).then(function(response){
-
+    console.log(response);
+    getTasks();
+  }).catch(function(err){
+    console.log(err);
   });
   // implement markComplete button
   // strike-through on marked complete
