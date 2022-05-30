@@ -1,6 +1,12 @@
+html {
+  background-color: honeydew;
+}
+
 table, td, th {
   border: 1px solid;
+  border-color:steelblue;
   text-align: left;
+  background-color: azure;
 }
 
 .taskHead, #taskIn {
@@ -9,4 +15,8 @@ table, td, th {
 
 .taskCompleted {
   text-decoration: line-through;
+}
+
+button {
+  background-color:lightpink;
 }
