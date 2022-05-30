@@ -44,9 +44,8 @@ function getTasks(){
       const falseAppendable = `<td class="uncomplete"><button class="markComplete" value=${response[i].complete}>Mark Complete</button></td>`;
       const trueAppendable = `<td class="completed">${response[i].time_completed}</td>`;
 
-      function completeCheck (row){
-        return row.complete ? ['class="taskCompleted"', trueAppendable] : ['class="task"', falseAppendable];
-      }
+      const completeCheck = row => row.complete ? ['class="taskCompleted"', trueAppendable] : ['class="task"', falseAppendable];
+
       el.append(
       `<tr id=${response[i].id}>
       <td class="added">${response[i].added}</td>
