@@ -13,7 +13,6 @@ function onReady(){
 }
 
 function addTask(){
-  //add task to server and database
   let newTask = {
     added: dateTime,
     task: $('#taskIn').val(),
@@ -45,6 +44,7 @@ function getTasks(){
       const trueAppendable = `<td class="completed">${response[i].time_completed}</td>`;
 
       const completeCheck = row => row.complete ? ['class="taskCompleted"', trueAppendable] : ['class="task"', falseAppendable];
+        //changes the append contents depending on if task is marked 'complete'
 
       el.append(
       `<tr id=${response[i].id}>
@@ -57,10 +57,9 @@ function getTasks(){
 }
 
 function deleteTask(){
-  //implement delete task button
   $.ajax({
     method: 'DELETE',
-    url: `/toDoList?id=${$(this).parent().parent().attr('id')}`
+    url: `/toDoList?id=${$(this).parent().parent().attr('id')}`   //sends id of the row (grandparent of the button)
   }).then(function(response){
     console.log(response);
     getTasks();
@@ -79,33 +78,4 @@ function markComplete(){
   }).catch(function(err){
     console.log(err);
   });
-  // implement markComplete button
-  // strike-through on marked complete
-  // perhaps make button toggle
-  // sort completed tasks to bottom or to separate table
-  // if task is complete replace 'mark complete' button with time of completion
 }
-
-// store task in database
-// refresh when task created show all pending tasks
-// user can complete or delete each task
-// change appearance when task is complete check off complete option
-// track completion status in database
-// delete removes from front end and database
-
-// style page using css
-
-// create database in postico named 'weekend-to-do-app'
-
-// make database.sql file in repo -- include all create table queries
-
-// stretch:
-
-// add bootstrap -- buttons / inputs / responsive -- see layout
-
-// include confirmation prompt when user deletes task
-// 	bootstrap modal or sweet alerts: use cdn option
-
-// use query params to have request reverse order of returned tasks
-
-// include task completed info on front end
