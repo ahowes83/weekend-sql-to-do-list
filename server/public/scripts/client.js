@@ -41,18 +41,18 @@ function getTasks(){
     el.empty();
 
     for (let i = 0; i < response.length; i++){
-      const falseAppendable = `<td class="uncomplete"><button class="markComplete" value=${response[i].complete} data-id="${response[i].id}">Mark Complete</button></td>`;
+      const falseAppendable = `<td class="uncomplete"><button class="markComplete" value=${response[i].complete}>Mark Complete</button></td>`;
       const trueAppendable = `<td class="completed">${response[i].time_completed}</td>`;
 
-      function completeCheck(row) {
-      return row.complete ? trueAppendable : falseAppendable;
-    }
-      el.append(`
-      <tr id=${response[i].id}>
-      <td class="added" data-id="${response[i].id}">${response[i].added}</td>
-      <td class="task">${response[i].task}</td>
-      ${completeCheck(response[i])}
-      <td><button class="deleteTask" data-id="${response[i].id}">Delete</button> </td> </tr>`)
+      function completeCheck (row){
+        return row.complete ? ['class="taskCompleted"', trueAppendable] : ['class="task"', falseAppendable];
+      }
+      el.append(
+      `<tr id=${response[i].id}>
+      <td class="added">${response[i].added}</td>
+      <td ${completeCheck(response[i])[0]}>${response[i].task}</td>
+      ${completeCheck(response[i])[1]}
+      <td><button class="deleteTask">Delete</button> </td> </tr>`)
     }
   });
 }

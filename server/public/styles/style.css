@@ -6,3 +6,7 @@ table, td, th {
 .taskHead, #taskIn {
   min-width: 20em;
 }
+
+.taskCompleted {
+  text-decoration: line-through;
+}
