@@ -1,12 +1,21 @@
 html {
-  /* background-color: honeydew; */
+  background-color: honeydew;
+  height: 100%;
+}
+
+body {
+  background-image: url(../assets/madpizza.png);
+  background-repeat:no-repeat;
+  background-attachment: fixed;
+  background-position: 80% 10%;
+  height: 100%;
 }
 
 table, td, th {
   border: 1px solid;
   border-color:steelblue;
   text-align: left;
-  background-color: azure;
+  background-color: RGBA(240, 255, 255, .5);
 }
 
 .taskHead, #taskIn {
@@ -21,20 +30,13 @@ button {
   background-color:lightpink;
 }
 
-#hero-image {
-  height: 30em;
-  background-image: url(../assets/ahowes83_pizza_dough_on_prep_table_floury_dslr_trending_on_Flickr.png);
-  background-position: right;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
+h2 {
+  color: #000000;
+  margin: .75ex;
 }
-
-#hero-content {
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgb(144, 144, 144);
+.clearBox {
+  margin: .75ex;
+  background-color: RGBA(240,255,240, .5);
+  border: 1px solid black;
+  width:fit-content;
 }
